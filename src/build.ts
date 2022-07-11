@@ -5,6 +5,7 @@ export const DIR = ".tmp_data"
 const build = async (path: string): Promise<boolean> => {
   if (path?.length === 0) return false
 
+  console.log("Reading file...")
   try {
     const data = await Deno.readFile(path)
     const td = new TextDecoder("utf-8")

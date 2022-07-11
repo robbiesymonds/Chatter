@@ -10,6 +10,8 @@ import build from "./build.ts"
 import manifest from "./fresh.gen.ts"
 
 const env = await config()
+
+console.log(env)
 try {
   const s = await build(env?.STATIC_FILE)
   if (s) console.log("\x1b[1m\x1b[32mGenerated static export data!\x1b[0m")
