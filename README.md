@@ -1,6 +1,6 @@
 # Chatter
 
-Explore your Messenger chat's from a new perspective.
+Explore your Messenger chat from a new perspective.
 
 ## 🚀 Getting Started
 Install [Deno CLI](https://deno.land) version 1.23.0 or higher.
