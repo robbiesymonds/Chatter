@@ -9,7 +9,8 @@ import { config } from "dotenv"
 import build from "./build.ts"
 import manifest from "./fresh.gen.ts"
 
-const env = await config()
+let env = await config()
+if (Object.keys(env).length === 0) env = Deno.env.toObject()
 
 console.log(env)
 try {
