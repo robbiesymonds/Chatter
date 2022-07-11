@@ -17,6 +17,7 @@ try {
   const s = await build(env?.STATIC_FILE)
   if (s) console.log("\x1b[1m\x1b[32mGenerated static export data!\x1b[0m")
 } catch (_e) {
+  throw _e
   throw "Unable to resolve location specified in STATIC_FILE variable!"
 }
 
