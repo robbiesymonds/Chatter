@@ -1,32 +1,24 @@
 /** @jsx h */
-import { Handlers, PageProps } from "$fresh/server.ts"
-import { config } from "dotenv"
-import { resolve } from "path"
 import { h } from "preact"
-import { DIR } from "../build.ts"
+import { Handlers, PageProps } from "$fresh/server.ts"
+import StaticView from "../islands/StaticView.tsx"
+import UploadView from "../islands/UploadView.tsx"
+import config from "../utils/env.ts"
 
-interface Props {
-  uploaded: boolean
-  message?: string
-}
+// Get environment variables.
+const env = await config()
 
-export const handler: Handlers<Props> = {
-  async GET(_, ctx) {
-    if (config()["STATIC_FILE"]) {
-      const path = resolve(`./${DIR}`, "temp.txt")
-      const data = await Deno.readTextFile(path)
-      return ctx.render({ uploaded: true, message: data })
-    }
-    return ctx.render({ uploaded: false })
+export const handler: Handlers<{ mode: "upload" | "static" }> = {
+  GET(_, ctx) {
+    return ctx.render({ mode: env.DATA_PATH ? "static" : "upload" })
   }
 }
 
-export default function Home({ data }: PageProps<Props>) {
-  const { uploaded, message } = data
+export default function Home({ data }: PageProps<{ mode: "upload" | "static" }>) {
   return (
     <div>
       <h1>Chatter</h1>
-      <div>{!uploaded ? "Upload file..." : message}</div>
+      {data.mode === "static" ? <StaticView /> : <UploadView />}
     </div>
   )
 }

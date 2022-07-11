@@ -29,10 +29,11 @@ I'll leave it up to you figure out how to download your data from Facebook. The 
 
 ## 👨‍💻 Sharing with Friends
 
-It's not ideal to share your exported data with friends for various reasons, so instead you could host your own copy of the 
+It's tedious to share your `.zip` for others for various reasons, instead you can enable a "static viewing" mode so that they 
 
 **Recommended Approach:**
 1. Fork this repository into a private repo.
 2. Add your `.zip` file into the repository.
-2. Specify the `STATIC_FILE` environment variable to the path of your `.zip` file.
-2. Use [Deno Deploy](https://deno.com/deploy) to host your instance for free.
+3. Specify the `DATA_PATH` environment variable to the path of your `.zip` file.
+4. Specify a value in the `PASSWORD` variable to restrict access *(Optional)*.
+5. Use [Deno Deploy](https://deno.com/deploy) to host your instance for free.
