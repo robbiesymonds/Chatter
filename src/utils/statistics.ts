@@ -1,7 +1,8 @@
-import { Chatter, Person } from "./chatter.ts"
+import { Chatter, Person, Data } from "./chatter.ts"
 import { MessengerExport } from "./messages.ts"
 import { format, difference, dayOfYear } from "datetime"
 import { STICKY_WORDS } from "./constants.ts"
+import Sentiment from "sentiment"
 
 function decodeEmoji(s: string) {
   const parser = new TextDecoder("utf-8")
@@ -14,7 +15,9 @@ const UNICODE = new RegExp(/[^\u0000-\u007F]+/)
 const CALL_START = new RegExp(/[a-zA-Z]+ started a (call|video chat)./)
 const CALL_END = new RegExp(/The (call|video chat) ended./)
 const CALL_ACTIVITY = new RegExp(/[a-zA-Z]+ (joined the (call|video chat)|started sharing video)./)
-const REACTION = new RegExp(/[[a-zA-Z]+ reacted [^.]+ to your message/)
+const REACTION = new RegExp(
+  /([[a-zA-Z]+ reacted [^.]+ to your message|Reacted [^.]+ to your message)/
+)
 const COMMON_WORD_LIMIT = 25
 const COMMON_EMOJI_LIMIT = 10
 
@@ -35,7 +38,7 @@ const intialise = (): Chatter => ({
     common_words: [],
     common_emojis: [],
     longest_streak: 0,
-    sentiment: [],
+    sentiment: 0,
     activity: [],
     age: 0
   }
@@ -57,13 +60,20 @@ const formatWordData = (words: Record<string, number>) =>
 const generate = (data: Array<MessengerExport>): Chatter => {
   const stats = intialise()
   const { general, people } = stats
-  let call_timestamp: Date
+
+  // Intialise temporary objects.
+  const sentiment = new Sentiment()
   const common_words: { [key: string]: number } = {}
   const common_emojis: { [key: string]: number } = {}
   const person_emojis: { [key: string]: string[] } = {}
   const person_words: { [key: string]: string[] } = {}
   const person_reactions: { [key: string]: string[] } = {}
+  const person_positive: { [key: string]: Data } = {}
+  const person_negative: { [key: string]: Data } = {}
+  const person_sentiment: { [key: string]: number } = {}
   let consecutive = { name: "", count: 0 }
+  let call_timestamp: Date | null
+  let non_zero_sentiment = 0
 
   // Fetch person object utility.
   const person = (n: string) => people.find((p) => p.name === n) as Person
@@ -83,6 +93,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
           audio: 0,
           gifs: 0,
           average_length: 0,
+          sentiment: 0,
           most_consecutive: 0,
           most_positive: "",
           most_negative: ""
@@ -90,6 +101,9 @@ const generate = (data: Array<MessengerExport>): Chatter => {
         person_emojis[name] = []
         person_words[name] = []
         person_reactions[name] = []
+        person_sentiment[name] = 0
+        person_positive[name] = { content: "", value: 0 }
+        person_negative[name] = { content: "", value: 0 }
         general.message_split.push({ content: name, value: 0 })
       })
     }
@@ -102,6 +116,21 @@ const generate = (data: Array<MessengerExport>): Chatter => {
 
           // Count characters.
           person(m.sender_name).average_length += m.content.length
+
+          // Sentiment addition.
+          const score = sentiment.analyze(m.content)?.score
+          if (score !== 0) {
+            person_sentiment[m.sender_name]++
+            person(m.sender_name).sentiment += score
+            general.sentiment += score
+            non_zero_sentiment++
+
+            if (score > person_positive[m.sender_name].value)
+              person_positive[m.sender_name] = { content: m.content, value: score }
+
+            if (score < person_negative[m.sender_name].value)
+              person_negative[m.sender_name] = { content: m.content, value: score }
+          }
 
           // Tokenise messages.
           const tokens = m.content.split(/(\s+)/).filter((e) => e.trim().length > 0)
@@ -178,11 +207,12 @@ const generate = (data: Array<MessengerExport>): Chatter => {
         if (CALL_START.test(m.content)) {
           call_timestamp = new Date(m.timestamp_ms)
           general.total_calls++
-        } else if (CALL_END.test(m.content)) {
+        } else if (CALL_END.test(m.content) && call_timestamp) {
           const mins = difference(call_timestamp, new Date(m.timestamp_ms), {
             units: ["minutes"]
           })!.minutes
           general.call_minutes += mins ?? 0
+          call_timestamp = null
         }
       }
     })
@@ -191,6 +221,9 @@ const generate = (data: Array<MessengerExport>): Chatter => {
   // Average messages based on activity.
   const daily_sum = general.activity.reduce((a, b) => a + b.value, 0)
   general.average_messages = Math.round(daily_sum / general.activity.length)
+
+  // Normalise sentiment.
+  general.sentiment /= non_zero_sentiment
 
   // Format commmon words and emojis.
   general.common_words = formatWordData(common_words)
@@ -238,6 +271,11 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     p.average_length = Math.round(
       p.average_length / general.message_split.find((s) => s.content === p.name)!.value
     )
+
+    // Sentiment.
+    p.most_positive = person_positive[p.name].content
+    p.most_negative = person_negative[p.name].content
+    p.sentiment /= person_sentiment[p.name]
   })
 
   return stats

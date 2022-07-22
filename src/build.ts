@@ -14,11 +14,15 @@ const build = async (): Promise<unknown> => {
     const parser = new TextDecoder("utf-8")
 
     // Only look for Messenger exports.
+    const files = []
     for await (const file of Deno.readDir(dir)) {
-      if (regex.test(file.name)) {
-        const json = parser.decode(await Deno.readFile(`${dir}/${file.name}`))
-        data.push(JSON.parse(json))
-      }
+      if (regex.test(file.name)) files.push(file.name)
+    }
+
+    files.sort().reverse()
+    for (const f of files) {
+      const json = parser.decode(await Deno.readFile(`${dir}/${f}`))
+      data.push(JSON.parse(json))
     }
 
     // Generate the statistics.

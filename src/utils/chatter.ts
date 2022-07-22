@@ -19,7 +19,7 @@ export interface General {
   common_words: Data[]
   common_emojis: Data[]
   longest_streak: number
-  sentiment: Data[]
+  sentiment: number
   activity: Data[]
   age: number
 }
@@ -36,6 +36,7 @@ export interface Person {
   gifs: number
   average_length: number
   most_consecutive: number
+  sentiment: number
   most_positive: string
   most_negative: string
 }
