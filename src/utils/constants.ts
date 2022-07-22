@@ -1,0 +1,4 @@
+// prettier-ignore
+export const STICKY_WORDS = [
+  "the", "there", "by", "at", "and", "so", "any", "if", "won't", "its", "than", "but", "about", "in", "on", "the", "was", "for", "that", "said", "a", "or", "of", "to", "there", "will", "be", "what", "get", "go", "think", "just", "every", "are", "it", "were", "had", "i", "very", "you", "is", "like", "we", "not", "have", "my", "can", "do", "no", "me", "this", "they", "he", "she", "then", "with", "want", "would", "all", "your", "now", "out", "time", "need", "well", "up", "one", "know", "okay", "did", "when", "also", "see", "could", "as", "going", "got", "come", "i'm", "too", "her", "an", "back", "really", "more", "say", "only", "from", "been", "sure", "still",  "don't", "it's", "much", "right", "im", "has", "before", "getting", "them", "leave", "some", "here", "after", "new", "look", "because", "over", "doing", "am", "probably", "should", "point",  "done", "off", "that's", "you're", "that's", "thats" 
+]

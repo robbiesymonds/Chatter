@@ -1,5 +1,8 @@
 :root {
   --background: #ffffff;
+  --dark: #000000;
+  --light: #909090;
+  --brand: #2196f3;
 }
 
 html {
@@ -9,16 +12,44 @@ html {
   font-size: 16px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   background-color: var(--background);
+  color: var(--dark);
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
   text-align: center;
+}
+
+main {
+  margin: clamp(2rem, 5vw, 5rem) auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 h1 {
   font-size: 5rem;
   font-weight: 700;
   letter-spacing: -0.045em;
+  margin-bottom: -0.25rem;
+}
+
+h2 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--light);
+}
+
+section {
+  width: 95%;
+  margin: 0 auto;
+  max-width: 80rem;
+  margin-top: clamp(1.5rem, 10vh, 6.5rem);
 }

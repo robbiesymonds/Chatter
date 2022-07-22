@@ -15,5 +15,13 @@ export default function StaticView() {
       })
   }, [])
 
-  return <div>{error ? <div>Something went wrong!</div> : <div>{data ?? "Loading..."}</div>}</div>
+  return (
+    <section>
+      {error ? (
+        <div>Something went wrong!</div>
+      ) : (
+        <pre style="text-align: left;">{JSON.stringify(data, null, 2) ?? "Loading..."}</pre>
+      )}
+    </section>
+  )
 }

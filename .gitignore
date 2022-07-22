@@ -3,5 +3,8 @@
 .idea/
 
 *.zip
+*.log
+TODO
 .env
 .DS_Store
+message_*.json

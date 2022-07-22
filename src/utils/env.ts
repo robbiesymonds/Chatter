@@ -1,7 +1,7 @@
 import { config } from "dotenv"
 
 type Vars = {
-  DATA_PATH?: string
+  ENABLE_STATIC?: string
   PASSWORD?: string
 }
 

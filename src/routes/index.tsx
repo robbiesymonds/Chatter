@@ -10,15 +10,20 @@ const env = await config()
 
 export const handler: Handlers<{ mode: "upload" | "static" }> = {
   GET(_, ctx) {
-    return ctx.render({ mode: env.DATA_PATH ? "static" : "upload" })
+    return ctx.render({ mode: env.ENABLE_STATIC ? "static" : "upload" })
   }
 }
 
 export default function Home({ data }: PageProps<{ mode: "upload" | "static" }>) {
   return (
-    <div>
+    <main>
       <h1>Chatter</h1>
+      <h2>
+        <a href="https://github.com/robbiesymonds/" target="_blank">
+          Made by Robbie Symonds ✌🏼
+        </a>
+      </h2>
       {data.mode === "static" ? <StaticView /> : <UploadView />}
-    </div>
+    </main>
   )
 }
