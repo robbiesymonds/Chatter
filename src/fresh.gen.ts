@@ -5,8 +5,12 @@
 import * as $0 from "./routes/_app.tsx";
 import * as $1 from "./routes/api/generate.ts";
 import * as $2 from "./routes/index.tsx";
-import * as $$0 from "./islands/StaticView.tsx";
-import * as $$1 from "./islands/UploadView.tsx";
+import * as $$0 from "./islands/GaugeChart.tsx";
+import * as $$1 from "./islands/LineChart.tsx";
+import * as $$2 from "./islands/PieChart.tsx";
+import * as $$3 from "./islands/ResultsView.tsx";
+import * as $$4 from "./islands/StaticView.tsx";
+import * as $$5 from "./islands/UploadView.tsx";
 
 const manifest = {
   routes: {
@@ -15,8 +19,12 @@ const manifest = {
     "./routes/index.tsx": $2,
   },
   islands: {
-    "./islands/StaticView.tsx": $$0,
-    "./islands/UploadView.tsx": $$1,
+    "./islands/GaugeChart.tsx": $$0,
+    "./islands/LineChart.tsx": $$1,
+    "./islands/PieChart.tsx": $$2,
+    "./islands/ResultsView.tsx": $$3,
+    "./islands/StaticView.tsx": $$4,
+    "./islands/UploadView.tsx": $$5,
   },
   baseUrl: import.meta.url,
 };

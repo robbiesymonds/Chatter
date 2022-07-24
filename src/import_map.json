@@ -6,6 +6,9 @@
     "preact-render-to-string": "https://esm.sh/preact-render-to-string@5.2.0?deps=preact@10.8.2",
     "dotenv": "https://deno.land/std@0.147.0/dotenv/mod.ts",
     "datetime": "https://deno.land/std@0.149.0/datetime/mod.ts",
-    "sentiment": "https://esm.sh/sentiment@5.0.2"
+    "sentiment": "https://esm.sh/sentiment@5.0.2",
+    "charts": "https://esm.sh/chart.js@3.8.0",
+    "date-fns": "https://deno.land/x/date_fns@v2.22.1",
+    "charts-date-adapter": "https://esm.sh/chartjs-adapter-date-fns@2.0.0"
   }
 }

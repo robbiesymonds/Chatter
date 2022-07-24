@@ -1,5 +1,6 @@
 export interface Chatter {
   chat_name: string
+  chat_type: "Regular" | "RegularGroup"
   general: General
   people: Person[]
 }

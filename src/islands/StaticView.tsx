@@ -1,6 +1,7 @@
 /** @jsx h */
 import { h } from "preact"
 import { useEffect, useState } from "preact/hooks"
+import ResultsView from "./ResultsView.tsx"
 
 export default function StaticView() {
   const [data, setData] = useState()
@@ -17,11 +18,7 @@ export default function StaticView() {
 
   return (
     <section>
-      {error ? (
-        <div>Something went wrong!</div>
-      ) : (
-        <pre style="text-align: left;">{JSON.stringify(data, null, 2) ?? "Loading..."}</pre>
-      )}
+      {error ? <div>Something went wrong!</div> : data ? <ResultsView data={data} /> : "Loading..."}
     </section>
   )
 }

@@ -18,11 +18,12 @@ const CALL_ACTIVITY = new RegExp(/[a-zA-Z]+ (joined the (call|video chat)|starte
 const REACTION = new RegExp(
   /([[a-zA-Z]+ reacted [^.]+ to your message|Reacted [^.]+ to your message)/
 )
-const COMMON_WORD_LIMIT = 25
+const COMMON_WORD_LIMIT = 15
 const COMMON_EMOJI_LIMIT = 10
 
 const intialise = (): Chatter => ({
   chat_name: "",
+  chat_type: "Regular",
   people: [],
   general: {
     total_messages: 0,
@@ -82,6 +83,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     // Collect repeated data once.
     if (i === 0) {
       stats.chat_name = chat.title
+      stats.chat_type = chat.thread_type
       chat.participants.map(({ name }) => {
         people.push({
           name,
@@ -156,10 +158,6 @@ const generate = (data: Array<MessengerExport>): Chatter => {
           })
         }
 
-        // Specific message type counts.
-        if (m.content && REACTION.test(m.content)) {
-          general.total_reactions++
-        }
         if (m.photos) {
           general.total_photos++
           person(m.sender_name).photos++
@@ -177,6 +175,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
           person(m.sender_name).gifs++
         }
         if (m.reactions) {
+          general.total_reactions += m.reactions.length
           m.reactions.forEach((r) => {
             person_reactions[r.actor].push(decodeEmoji(r.reaction))
           })
@@ -250,6 +249,18 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     current_day = date
   })
 
+  // TODO: Add missing days to activity? More accurate graph, looks worse visually.
+  // const earliest = new Date(general.activity[0].content)
+  // const latest = new Date(general.activity[general.activity.length - 1].content)
+  // const increment = earliest
+  // const all_dates: Data[] = []
+  // while (increment <= latest) {
+  //   const exists = general.activity.find((a) => a.content === format(increment, "yyyy-MM-dd"))
+  //   all_dates.push({ content: format(increment, "yyyy-MM-dd"), value: exists ? exists.value : 0 })
+  //   increment.setDate(increment.getDate() + 1)
+  // }
+  // general.activity = all_dates
+
   // Calculate person-specific favourites.
   people.forEach((p) => {
     // Emoji
@@ -264,7 +275,10 @@ const generate = (data: Array<MessengerExport>): Chatter => {
 
     // Reactions
     const r_count: { [key: string]: number } = {}
-    for (const r of person_reactions[p.name]) r_count[r] = r_count[r] ? r_count[r] + 1 : 1
+    for (const r of person_reactions[p.name]) {
+      const re = r === "❤" ? "\u2764\ufe0f" : r
+      r_count[re] = r_count[re] ? r_count[re] + 1 : 1
+    }
     p.favourite_reactions = formatEmojiData(r_count)
 
     // Average length calculation.
@@ -273,8 +287,8 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     )
 
     // Sentiment.
-    p.most_positive = person_positive[p.name].content
-    p.most_negative = person_negative[p.name].content
+    p.most_positive = decodeEmoji(person_positive[p.name].content)
+    p.most_negative = decodeEmoji(person_negative[p.name].content)
     p.sentiment /= person_sentiment[p.name]
   })
 

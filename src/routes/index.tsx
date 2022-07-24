@@ -19,7 +19,7 @@ export default function Home({ data }: PageProps<{ mode: "upload" | "static" }>)
     <main>
       <h1>Chatter</h1>
       <h2>
-        <a href="https://github.com/robbiesymonds/" target="_blank">
+        <a href="https://github.com/robbiesymonds/Chatter" target="_blank">
           Made by Robbie Symonds ✌🏼
         </a>
       </h2>
