@@ -64,7 +64,7 @@ export default function StaticView() {
       ) : (
         <div class="wrapper">
           <div class="upload">
-            <input ref={ref} type="file" multiple />
+            <input ref={ref} type="file" multiple accept="application/JSON" />
             <span>
               Drag your <kbd>.json</kbd> files here or <b>browse</b> to upload.
             </span>
