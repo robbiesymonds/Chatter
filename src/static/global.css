@@ -64,6 +64,22 @@ section {
   animation-fill-mode: both;
 }
 
+.error {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: block;
+  width: fit-content;
+  height: fit-content;
+  color: rgb(225, 56, 56);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
 .loader {
   width: 3rem;
   height: 3rem;

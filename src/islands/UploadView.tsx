@@ -11,6 +11,7 @@ export default function StaticView() {
   const ref = useRef<HTMLInputElement>(null)
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false)
 
   const readJSON = (file: File): Promise<MessengerExport> =>
     new Promise((resolve, reject) => {
@@ -39,6 +40,7 @@ export default function StaticView() {
         .then((res) => res.json())
         .then((res) => {
           if (res.status) setData(res.data)
+          else setError(true)
           setLoading(false)
         })
     }
@@ -55,6 +57,8 @@ export default function StaticView() {
     <section>
       {isLoading ? (
         <Loading />
+      ) : error ? (
+        <div class="error">Something went wrong!</div>
       ) : data ? (
         <ResultsView data={data} />
       ) : (

@@ -19,7 +19,13 @@ export default function StaticView() {
 
   return (
     <section>
-      {error ? <div>Something went wrong!</div> : data ? <ResultsView data={data} /> : <Loading />}
+      {error ? (
+        <div class="error">Something went wrong!</div>
+      ) : data ? (
+        <ResultsView data={data} />
+      ) : (
+        <Loading />
+      )}
     </section>
   )
 }

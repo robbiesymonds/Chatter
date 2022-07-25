@@ -28,7 +28,7 @@ It's tedious to share your exported data for various reasons, instead you can en
 **Recommended Approach:**
 1. Fork this repository into a private repo.
 2. Add your `message_[X].json` files into the `data` directory.
-3. Set the `ENABLE_STATIC` environment variable to `true`.
+3. Rename `.env.sample` and set the `ENABLE_STATIC` environment variable to `true`.
 4. Specify a value in the `PASSWORD` variable to restrict access *(Optional)*.
 5. Use [Deno Deploy](https://deno.com/deploy) to host your instance for free.
 
