@@ -7,4 +7,4 @@
 TODO
 .env
 .DS_Store
-message_*.json
+data/**/*.json
