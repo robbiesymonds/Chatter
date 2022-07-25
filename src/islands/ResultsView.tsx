@@ -44,7 +44,7 @@ export default function StaticView({ data }: { data: Chatter }) {
   }
 
   return (
-    <>
+    <div class="results">
       <div class="header">
         <h1>
           {data.chat_name}
@@ -56,10 +56,9 @@ export default function StaticView({ data }: { data: Chatter }) {
               <div
                 class="chip"
                 onClick={() =>
-                  window.scrollTo({
-                    behavior: "smooth",
-                    top: document.getElementById(p.name)?.offsetTop
-                  })
+                  document
+                    .getElementById(p.name)
+                    ?.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" })
                 }
               >
                 {p.name}
@@ -108,13 +107,15 @@ export default function StaticView({ data }: { data: Chatter }) {
               The best consecutive record was <b>{general.longest_streak} days</b> in a row!
             </p>
           </div>
-          <div>
-            <h3>Audio Calls</h3>
-            <p>
-              There was <b>{plural(general.total_calls, "call")}</b>. You called for{" "}
-              <b>{plural(general.call_minutes, "minute")}</b> in total.
-            </p>
-          </div>
+          {general.total_calls >= 1 && (
+            <div>
+              <h3>Audio Calls</h3>
+              <p>
+                There was <b>{plural(general.total_calls, "call")}</b>. You called for{" "}
+                <b>{plural(general.call_minutes, "minute")}</b> in total.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -137,7 +138,7 @@ export default function StaticView({ data }: { data: Chatter }) {
         </div>
         <div class="big-right">
           <div class="card">
-            <h3>Activity</h3>
+            <h3>Monthly Activity</h3>
             <div style="padding-top: 1rem;">
               <LineChart data={general.activity} />
             </div>
@@ -263,6 +264,6 @@ export default function StaticView({ data }: { data: Chatter }) {
           <hr />
         </>
       ))}
-    </>
+    </div>
   )
 }

@@ -2,6 +2,7 @@
 import { h } from "preact"
 import { useEffect, useState } from "preact/hooks"
 import ResultsView from "./ResultsView.tsx"
+import Loading from "./Loading.tsx"
 
 export default function StaticView() {
   const [data, setData] = useState()
@@ -18,7 +19,7 @@ export default function StaticView() {
 
   return (
     <section>
-      {error ? <div>Something went wrong!</div> : data ? <ResultsView data={data} /> : "Loading..."}
+      {error ? <div>Something went wrong!</div> : data ? <ResultsView data={data} /> : <Loading />}
     </section>
   )
 }

@@ -249,17 +249,18 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     current_day = date
   })
 
-  // TODO: Add missing days to activity? More accurate graph, looks worse visually.
-  // const earliest = new Date(general.activity[0].content)
-  // const latest = new Date(general.activity[general.activity.length - 1].content)
-  // const increment = earliest
-  // const all_dates: Data[] = []
-  // while (increment <= latest) {
-  //   const exists = general.activity.find((a) => a.content === format(increment, "yyyy-MM-dd"))
-  //   all_dates.push({ content: format(increment, "yyyy-MM-dd"), value: exists ? exists.value : 0 })
-  //   increment.setDate(increment.getDate() + 1)
-  // }
-  // general.activity = all_dates
+  // Converts activity to monthly blocks.
+  // ? Make this based on conversation length?
+  general.activity.sort((a, b) => new Date(a.content).getTime() - new Date(b.content).getTime())
+
+  const monthly_activity: Data[] = []
+  general.activity.forEach((a) => {
+    const month = format(new Date(a.content), "yyyy-MM-'01'")
+    const exists = monthly_activity.find((a) => a.content === month)
+    if (exists) exists.value += a.value
+    else monthly_activity.push({ content: month, value: a.value })
+  })
+  general.activity = monthly_activity
 
   // Calculate person-specific favourites.
   people.forEach((p) => {

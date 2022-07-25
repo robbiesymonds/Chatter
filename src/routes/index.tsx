@@ -10,7 +10,7 @@ const env = await config()
 
 export const handler: Handlers<{ mode: "upload" | "static" }> = {
   GET(_, ctx) {
-    return ctx.render({ mode: env.ENABLE_STATIC ? "static" : "upload" })
+    return ctx.render({ mode: env.ENABLE_STATIC === "true" ? "static" : "upload" })
   }
 }
 

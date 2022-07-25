@@ -50,10 +50,9 @@ const LineChart = ({ data }: { data: Data[] }) => {
               type: "time",
               time: {
                 unit: "month",
-                tooltipFormat: "do MMMM, yyyy"
+                tooltipFormat: "MMMM, yyyy"
               },
-              min: data[0].content,
-              max: data[data.length - 1].content
+              min: data[0].content
             }
           }
         },
@@ -64,7 +63,7 @@ const LineChart = ({ data }: { data: Data[] }) => {
               fill: false,
               borderColor: "#418bfa",
               pointHitRadius: 20,
-              tension: 0.15
+              tension: 0.35
             }
           ]
         }
