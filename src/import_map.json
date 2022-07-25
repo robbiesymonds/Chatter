@@ -9,6 +9,8 @@
     "sentiment": "https://esm.sh/sentiment@5.0.2",
     "charts": "https://esm.sh/chart.js@3.8.0",
     "date-fns": "https://esm.sh/date-fns@2.29.1",
-    "charts-date-adapter": "https://esm.sh/chartjs-adapter-date-fns@2.0.0"
+    "charts-date-adapter": "https://esm.sh/chartjs-adapter-date-fns@2.0.0",
+    "cookie": "https://deno.land/std@0.149.0/http/cookie.ts",
+    "hash": "https://deno.land/std@0.77.0/hash/mod.ts"
   }
 }

@@ -5,6 +5,7 @@
   --extra-light: #eeeeee;
   --border: #d1d1d1;
   --brand: #418bfa;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
 
 html {
@@ -13,7 +14,7 @@ html {
   max-width: 100%;
   font-size: 16px;
   overflow-x: hidden;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--font);
   background-color: var(--background);
   color: var(--dark);
 }
@@ -481,6 +482,43 @@ h4 {
 
 .upload span b {
   color: var(--dark);
+}
+
+form {
+  width: 80%;
+  margin: auto;
+  height: fit-content;
+  max-width: 25rem;
+  margin-top: 7rem;
+  display: block;
+}
+
+form input {
+  position: relative;
+  padding: 1rem 1rem;
+  box-sizing: border-box;
+  border-radius: 0.25rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  width: 100%;
+  outline: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+form input:focus {
+  border-color: var(--brand);
+}
+
+h3.error {
+  position: relative;
+  text-align: left;
+  margin-left: 0.1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* Grid Styles */
