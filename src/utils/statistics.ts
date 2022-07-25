@@ -228,12 +228,6 @@ const generate = (data: Array<MessengerExport>): Chatter => {
   general.common_words = formatWordData(common_words)
   general.common_emojis = formatEmojiData(common_emojis)
 
-  // Chat age since first message.
-  general.age =
-    difference(new Date(general.activity[0].content), new Date(), {
-      units: ["days"]
-    }).days ?? 0
-
   // Longest streak.
   let longest_streak = 0
   let current_day: Date
@@ -249,10 +243,16 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     current_day = date
   })
 
-  // Converts activity to monthly blocks.
   // ? Make this based on conversation length?
   general.activity.sort((a, b) => new Date(a.content).getTime() - new Date(b.content).getTime())
 
+  // Chat age since first message.
+  general.age =
+    difference(new Date(general.activity[0].content), new Date(), {
+      units: ["days"]
+    }).days ?? 0
+
+  // Converts activity to monthly blocks.
   const monthly_activity: Data[] = []
   general.activity.forEach((a) => {
     const month = format(new Date(a.content), "yyyy-MM-'01'")
