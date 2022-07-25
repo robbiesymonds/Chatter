@@ -15,7 +15,7 @@ Now open http://localhost:3000 in your browser and upload your chats!
 
 ## 💬  Exporting Messenger
 
-I'll leave it up to you figure out how to download your data from Facebook. The files you are looking for are named `message_[X].json`, these will be uploaded to the app. (at the time of writing this is how Facebook gives it to you).
+Once you [download your data from Facebook](https://www.facebook.com/dyi) (I recommended deselecting everything except Messenger and choose low-quality media for fastest processing). The files you are looking for are named `message_[X].json`, these will be uploaded to the app. (at the time of writing this is how Facebook gives it to you).
 
 > Note: No data is stored anywhere on Chatter, it's all in-browser. This also goes for the sentiment analysis, which is done offline thanks to the [AFINN-165](http://www2.imm.dtu.dk/pubdb/pubs/6010-full.html) to keep your data secure (at the expense of complexity).
 
