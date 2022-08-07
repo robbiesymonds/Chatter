@@ -231,16 +231,18 @@ const generate = (data: Array<MessengerExport>): Chatter => {
   // Longest streak.
   let longest_streak = 0
   let current_day: Date
-  general.activity.forEach(({ content }, i) => {
-    const date = new Date(content)
-    if (i === 0) current_day = date
-    if (dayOfYear(current_day) % 365 === dayOfYear(date) - 1) {
-      longest_streak++
-      if (longest_streak > general.longest_streak) {
-        general.longest_streak = longest_streak
-      }
-    } else longest_streak = 0
-    current_day = date
+  general.activity.forEach((a, i) => {
+    if (a.content) {
+      const date = new Date(a.content)
+      if (i === 0) current_day = date
+      if (dayOfYear(current_day) % 365 === dayOfYear(date) - 1) {
+        longest_streak++
+        if (longest_streak > general.longest_streak) {
+          general.longest_streak = longest_streak
+        }
+      } else longest_streak = 0
+      current_day = date
+    }
   })
 
   // ? Make this based on conversation length?
