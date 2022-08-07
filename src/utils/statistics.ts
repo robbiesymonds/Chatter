@@ -127,11 +127,17 @@ const generate = (data: Array<MessengerExport>): Chatter => {
             general.sentiment += score
             non_zero_sentiment++
 
+            let non_zero_words = 0
+            m.content.split(" ").forEach((w) => {
+              const s = sentiment.analyze(w)?.score
+              if (s !== 0) non_zero_words++
+            })
+
             if (score > person_positive[m.sender_name].value)
-              person_positive[m.sender_name] = { content: m.content, value: score }
+              person_positive[m.sender_name] = { content: m.content, value: score / non_zero_words }
 
             if (score < person_negative[m.sender_name].value)
-              person_negative[m.sender_name] = { content: m.content, value: score }
+              person_negative[m.sender_name] = { content: m.content, value: score / non_zero_words }
           }
 
           // Tokenise messages.
