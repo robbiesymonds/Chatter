@@ -2,6 +2,7 @@
 import { h } from "preact"
 import { useRef, useEffect } from "preact/hooks"
 import { Data } from "../utils/chatter.ts"
+import { enUS } from "date-fns/locale"
 import "charts-date-adapter"
 import {
   Chart,
@@ -29,7 +30,7 @@ const LineChart = ({ data }: { data: Data[] }) => {
 
   useEffect(() => {
     if (ref.current) {
-      const chart = new Chart(ref.current, {
+      new Chart(ref.current, {
         type: "line",
         options: {
           maintainAspectRatio: false,
@@ -51,6 +52,11 @@ const LineChart = ({ data }: { data: Data[] }) => {
               time: {
                 unit: "month",
                 tooltipFormat: "MMMM, yyyy"
+              },
+              adapters: {
+                date: {
+                  locale: enUS
+                }
               },
               min: data[0].content
             }

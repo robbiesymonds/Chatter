@@ -232,7 +232,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
   let longest_streak = 0
   let current_day: Date
   general.activity.forEach((a, i) => {
-    if (a.content) {
+    if (a.content !== undefined) {
       const date = new Date(a.content)
       if (i === 0) current_day = date
       if (dayOfYear(current_day) % 365 === dayOfYear(date) - 1) {
