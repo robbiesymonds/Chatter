@@ -4,7 +4,7 @@ const StaticView = lazy(() => import("./components/StaticView"))
 const UploadView = lazy(() => import("./components/UploadView"))
 
 /* ----- ENABLE THIS FOR STATIC MODE ----- */
-const STATIC = true
+const STATIC = false
 
 function App() {
   return <>{STATIC ? <StaticView /> : <UploadView />}</>
