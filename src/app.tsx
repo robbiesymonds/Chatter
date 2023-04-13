@@ -1,11 +1,13 @@
+import { lazy } from "react"
 import ReactDOM from "react-dom/client"
-import { useState } from "react"
-import UploadView from "./components/UploadView"
-import StaticView from "./components/StaticView"
+const StaticView = lazy(() => import("./components/StaticView"))
+const UploadView = lazy(() => import("./components/UploadView"))
+
+/* ----- ENABLE THIS FOR STATIC MODE ----- */
+const STATIC = true
 
 function App() {
-  const [mode, setMode] = useState<"static" | "upload">("upload")
-  return <>{mode === "static" ? <StaticView /> : <UploadView />}</>
+  return <>{STATIC ? <StaticView /> : <UploadView />}</>
 }
 
 // Render the App component.

@@ -31,10 +31,12 @@ It's tedious to share your exported data for various reasons, instead you can en
 **Recommended Approach:**
 
 1. Fork this repository into a private repo.
-2. Add your `message_[X].json` files into the `data` directory.
-3. Rename `.env.sample` and set the `ENABLE_STATIC` environment variable to `true`.
+2. Add your `message_[X].json` files into the `data` directory (no sub-folders).
+3. Modify the `app.tsx` file and set the `STATIC_MODE` variable to `true`.
 4. Run the `yarn build` or `npm run build` command to generate the static files.
-5. Use a platform like [Vercel](https://vercel.com) to host your instance for free.
+5. Upload the contents of the `dist` directory to wherever you like!
+
+> **Note:** Most platforms, like [Vercel](https://vercel.com), can be used to host your static files for free.
 
 ## 💾 Planned Changes
 
