@@ -1,9 +1,6 @@
-/** @jsx h */
-import { h } from "preact"
-
 const Loading = () => {
   return (
-    <svg class="loader" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+    <svg className="loader" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
       <g>
         <animateTransform
           attributeName="transform"
@@ -16,12 +13,12 @@ const Loading = () => {
         />
         <circle
           fill="none"
-          stroke-width="5"
+          strokeWidth="5"
           cx="33"
           cy="33"
           r="30"
-          stroke-dasharray="187"
-          stroke-dashoffset="610"
+          strokeDasharray="187"
+          strokeDashoffset="610"
           stroke="#000"
         >
           <animateTransform

@@ -1,8 +1,11 @@
-import { Chatter, Person, Data } from "./chatter.ts"
-import { MessengerExport } from "./messages.ts"
-import { format, difference, dayOfYear } from "datetime"
-import { STICKY_WORDS } from "./constants.ts"
+import dayjs from "dayjs"
+import dayOfYearPlugin from "dayjs/plugin/dayOfYear"
 import Sentiment from "sentiment"
+import { Chatter, Data, Person } from "../constants/chatter"
+import { MessengerExport } from "../constants/messages"
+import { STICKY_WORDS } from "../constants/words"
+
+dayjs.extend(dayOfYearPlugin)
 
 function decodeEmoji(s: string) {
   const parser = new TextDecoder("utf-8")
@@ -10,7 +13,8 @@ function decodeEmoji(s: string) {
   return parser.decode(data)
 }
 
-// deno-lint-ignore no-control-regex
+const COMMON_WORD_LIMIT = 15
+const COMMON_EMOJI_LIMIT = 10
 const UNICODE = new RegExp(/[^\u0000-\u007F]+/)
 const CALL_START = new RegExp(/[a-zA-Z]+ started a (call|video chat)./)
 const CALL_END = new RegExp(/The (call|video chat) ended./)
@@ -18,8 +22,6 @@ const CALL_ACTIVITY = new RegExp(/[a-zA-Z]+ (joined the (call|video chat)|starte
 const REACTION = new RegExp(
   /([[a-zA-Z]+ reacted [^.]+ to your message|Reacted [^.]+ to your message)/
 )
-const COMMON_WORD_LIMIT = 15
-const COMMON_EMOJI_LIMIT = 10
 
 const intialise = (): Chatter => ({
   chat_name: "",
@@ -191,7 +193,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
         general.message_split.find((p) => p.content === m.sender_name)!.value++
 
         // Message activity.
-        const day_sent = format(new Date(m.timestamp_ms), "yyyy-MM-dd")
+        const day_sent = dayjs(m.timestamp_ms).format("YYYY-MM-DD")
         const activity = general.activity.find((a) => a.content === day_sent)
         if (!activity) general.activity.push({ content: day_sent, value: 1 })
         else activity.value++
@@ -213,9 +215,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
           call_timestamp = new Date(m.timestamp_ms)
           general.total_calls++
         } else if (CALL_END.test(m.content) && call_timestamp) {
-          const mins = difference(call_timestamp, new Date(m.timestamp_ms), {
-            units: ["minutes"]
-          })!.minutes
+          const mins = dayjs(call_timestamp).diff(new Date(m.timestamp_ms), "minutes")
           general.call_minutes += mins ?? 0
           call_timestamp = null
         }
@@ -241,7 +241,7 @@ const generate = (data: Array<MessengerExport>): Chatter => {
     if (a.content !== undefined) {
       const date = new Date(a.content)
       if (i === 0) current_day = date
-      if (dayOfYear(current_day) % 365 === dayOfYear(date) - 1) {
+      if (dayjs(current_day).dayOfYear() % 365 === dayjs(date).dayOfYear() - 1) {
         longest_streak++
         if (longest_streak > general.longest_streak) {
           general.longest_streak = longest_streak
@@ -255,15 +255,16 @@ const generate = (data: Array<MessengerExport>): Chatter => {
   general.activity.sort((a, b) => new Date(a.content).getTime() - new Date(b.content).getTime())
 
   // Chat age since first message.
-  general.age =
-    difference(new Date(general.activity[0].content), new Date(), {
-      units: ["days"]
-    }).days ?? 0
+  console.log(
+    general.activity[0].content,
+    dayjs(general.activity[0].content).diff(new Date(), "day")
+  )
+  general.age = Math.abs(dayjs(general.activity[0].content).diff(new Date(), "day")) ?? 0
 
   // Converts activity to monthly blocks.
   const monthly_activity: Data[] = []
   general.activity.forEach((a) => {
-    const month = format(new Date(a.content), "yyyy-MM-'01'")
+    const month = `${dayjs(new Date(a.content)).format("YYYY-MM")}-01`
     const exists = monthly_activity.find((a) => a.content === month)
     if (exists) exists.value += a.value
     else monthly_activity.push({ content: month, value: a.value })

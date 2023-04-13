@@ -1,15 +1,15 @@
-/** @jsx h */
-import { h } from "preact"
-import { useRef, useEffect, useState } from "preact/hooks"
-import { MessengerExport } from "../utils/messages.ts"
-import ResultsView from "./ResultsView.tsx"
-import Loading from "./Loading.tsx"
+import { useRef, useEffect, useState } from "react"
+import { MessengerExport } from "../constants/messages"
+import ResultsView from "./ResultsView"
+import Loading from "./Loading"
+import generate from "../utils/statistics"
+import { Chatter } from "../constants/chatter"
 
 const regex = new RegExp(/message_[0-9]+\.json/)
 
 export default function StaticView() {
   const ref = useRef<HTMLInputElement>(null)
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<Chatter | undefined>()
   const [isLoading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
 
@@ -29,20 +29,19 @@ export default function StaticView() {
       setLoading(true)
       const files = Array.from(ref.current?.files).sort()
       for (const file of files) if (regex.test(file.name)) data.push(readJSON(file))
+      console.log(data)
 
       // Generate the statistics.
       const json = await Promise.all(data)
-      fetch("/api/generate", {
-        method: "POST",
-        body: JSON.stringify(json),
-        headers: { "Content-Type": "application/json" }
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.status) setData(res.data)
-          else setError(true)
-          setLoading(false)
-        })
+      try {
+        const stats = generate(json)
+        setData(stats)
+      } catch (e) {
+        setError(true)
+        return
+      }
+
+      setLoading(false)
     }
   }
 
@@ -58,19 +57,19 @@ export default function StaticView() {
       {isLoading ? (
         <Loading />
       ) : error ? (
-        <div class="error">Something went wrong!</div>
+        <div className="error">Something went wrong!</div>
       ) : data ? (
         <ResultsView data={data} />
       ) : (
-        <div class="wrapper">
-          <div class="upload">
+        <div className="wrapper">
+          <div className="upload">
             <input ref={ref} type="file" multiple accept="application/JSON" />
             <span>
               Drag your <kbd>.json</kbd> files here or <b>browse</b> to upload.
             </span>
           </div>
-          <p class="hint">No data is kept, everything gets lost!</p>
-          <p class="hint">
+          <p className="hint">No data is kept, everything gets lost!</p>
+          <p className="hint">
             See the{" "}
             <a href="https://github.com/robbiesymonds/Chatter" target="_blank">
               docs

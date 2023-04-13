@@ -1,10 +1,13 @@
-/node_modules
+# directories
+node_modules/
+.parcel-cache/
 .vscode/
 .idea/
+dist/
 
+# files
+data/**/*.json
+.DS_Store
 *.zip
 *.log
-TODO
 .env
-.DS_Store
-data/**/*.json

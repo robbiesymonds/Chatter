@@ -1,9 +1,7 @@
-/** @jsx h **/
-import { h } from "preact"
-import { useRef, useEffect } from "preact/hooks"
-import { Chart, PieController, ArcElement, Tooltip } from "charts"
-import randomColor from "../utils/colors.ts"
-import { Data } from "../utils/chatter.ts"
+import { useRef, useEffect } from "react"
+import { Chart, PieController, ArcElement, Tooltip } from "chart.js"
+import randomColor from "../utils/colors"
+import { Data } from "../constants/chatter"
 
 Chart.register(PieController, ArcElement, Tooltip)
 

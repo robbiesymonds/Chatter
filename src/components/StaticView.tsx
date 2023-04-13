@@ -1,8 +1,6 @@
-/** @jsx h */
-import { h } from "preact"
-import { useEffect, useState } from "preact/hooks"
-import ResultsView from "./ResultsView.tsx"
-import Loading from "./Loading.tsx"
+import { useEffect, useState } from "react"
+import ResultsView from "./ResultsView"
+import Loading from "./Loading"
 
 export default function StaticView() {
   const [data, setData] = useState()
@@ -20,7 +18,7 @@ export default function StaticView() {
   return (
     <section>
       {error ? (
-        <div class="error">Something went wrong!</div>
+        <div className="error">Something went wrong!</div>
       ) : data ? (
         <ResultsView data={data} />
       ) : (

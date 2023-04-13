@@ -1,10 +1,8 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { h, Fragment } from "preact"
-import { Chatter, Person } from "../utils/chatter.ts"
-import PieChart from "./PieChart.tsx"
-import LineChart from "./LineChart.tsx"
-import GaugeChart from "./GaugeChart.tsx"
+import { Chatter, Person } from "../constants/chatter"
+import PieChart from "./PieChart"
+import LineChart from "./LineChart"
+import GaugeChart from "./GaugeChart"
+import { Fragment } from "react"
 
 const NA = (s: number) => (s == 0 ? <i>N/A</i> : s)
 
@@ -44,17 +42,18 @@ export default function StaticView({ data }: { data: Chatter }) {
   }
 
   return (
-    <div class="results">
-      <div class="header">
+    <div className="results">
+      <div className="header">
         <h1>
           {data.chat_name}
           <span>{plural(general.age, "day")}</span>
         </h1>
         {data.chat_type === "RegularGroup" && (
-          <div class="chips">
-            {people.map((p) => (
+          <div className="chips">
+            {people.map((p, i) => (
               <div
-                class="chip"
+                key={i}
+                className="chip"
                 onClick={() =>
                   document
                     .getElementById(p.name)
@@ -68,33 +67,33 @@ export default function StaticView({ data }: { data: Chatter }) {
         )}
       </div>
 
-      <div class="grid">
-        <div class="card info">
+      <div className="grid">
+        <div className="card info">
           <h2>Total Messages</h2>
           <span>{NA(general.total_messages)}</span>
         </div>
-        <div class="card info">
+        <div className="card info">
           <h2>Total Photos</h2>
           <span>{NA(general.total_photos)}</span>
         </div>
-        <div class="card info">
+        <div className="card info">
           <h2>Total Videos</h2>
           <span>{NA(general.total_videos)}</span>
         </div>
-        <div class="card info">
+        <div className="card info">
           <h2>Total Audio</h2>
           <span>{NA(general.total_audio)}</span>
         </div>
-        <div class="card info">
+        <div className="card info">
           <h2>Total GIFs</h2>
           <span>{NA(general.total_gifs)}</span>
         </div>
-        <div class="card info">
+        <div className="card info">
           <h2>Total Reactions</h2>
           <span>{NA(general.total_reactions)}</span>
         </div>
 
-        <div class="chat">
+        <div className="chat">
           <div>
             <h3>Average Messages</h3>
             <p>
@@ -121,45 +120,45 @@ export default function StaticView({ data }: { data: Chatter }) {
 
       <hr />
 
-      <div class="cards">
-        <div class="left small-left">
-          <div class="card">
+      <div className="cards">
+        <div className="left small-left">
+          <div className="card">
             <h3>Message Split</h3>
-            <div style="width: 90%; padding-top: 1rem">
+            <div style={{ width: "90%", paddingTop: "1rem" }}>
               <PieChart data={general.message_split} />
             </div>
           </div>
-          <div class="card">
+          <div className="card">
             <h3>Chat Sentiment</h3>
-            <div style="width: 90%; padding-top: 1rem">
+            <div style={{ width: "90%", paddingTop: "1rem" }}>
               <GaugeChart data={general.sentiment} />
             </div>
           </div>
         </div>
-        <div class="big-right">
-          <div class="card">
+        <div className="big-right">
+          <div className="card">
             <h3>Monthly Activity</h3>
-            <div style="padding-top: 1rem;">
+            <div style={{ paddingTop: "1rem" }}>
               <LineChart data={general.activity} />
             </div>
           </div>
-          <div class="right">
-            <div class="card">
+          <div className="right">
+            <div className="card">
               <h3>Common Words</h3>
-              <div class="list">
-                {general.common_words.map((w) => (
-                  <div>
+              <div className="list">
+                {general.common_words.map((w, i) => (
+                  <div key={i}>
                     <kbd>{w.content}</kbd>
                     <span>{w.value}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div class="card">
+            <div className="card">
               <h3>Most Used Emojis</h3>
-              <div class="list">
-                {general.common_emojis.map((e) => (
-                  <div>
+              <div className="list">
+                {general.common_emojis.map((e, i) => (
+                  <div key={i}>
                     <span>{e.content}</span>
                     <span>{e.value}</span>
                   </div>
@@ -173,18 +172,18 @@ export default function StaticView({ data }: { data: Chatter }) {
       <hr />
       <hr />
 
-      <div class="break">
+      <div className="break">
         <span>Chat Participants</span>
       </div>
 
       <hr />
 
       {data.people.map((p, i) => (
-        <>
+        <Fragment key={i}>
           <h4 id={p.name}>{p.name}</h4>
-          <div class={`cards ${i % 2 === 1 ? "flip" : ""}`}>
-            <div class="card person-big">
-              <div class="chat">
+          <div className={`cards ${i % 2 === 1 ? "flip" : ""}`}>
+            <div className="card person-big">
+              <div className="chat">
                 <div>
                   <h3>Sharing is Caring</h3>
                   <p dangerouslySetInnerHTML={{ __html: shareMessage(p) }}></p>
@@ -198,18 +197,18 @@ export default function StaticView({ data }: { data: Chatter }) {
                 </div>
                 <div>
                   <h3>Reactions</h3>
-                  <p>
+                  <div>
                     {reactionMessage(p)}
                     <ul>
-                      {p.favourite_reactions.map((r) => (
-                        <li>
+                      {p.favourite_reactions.map((r, i) => (
+                        <li key={i}>
                           <span>
                             {r.content} {r.value}
                           </span>
                         </li>
                       ))}
                     </ul>
-                  </p>
+                  </div>
                 </div>
                 <div>
                   <h3>Spammer</h3>
@@ -231,28 +230,28 @@ export default function StaticView({ data }: { data: Chatter }) {
                 </div>
               </div>
             </div>
-            <div class="card person-small">
+            <div className="card person-small">
               <h3>Overall Sentiment</h3>
-              <div style="width: 90%; padding-top: 1rem">
+              <div style={{ width: "90%", paddingTop: "1rem" }}>
                 <GaugeChart data={p.sentiment} />
               </div>
             </div>
-            <div class="card person-table-left">
+            <div className="card person-table-left">
               <h3>Favourite Words</h3>
-              <div class="list">
-                {p.favourite_words.map((w) => (
-                  <div>
+              <div className="list">
+                {p.favourite_words.map((w, i) => (
+                  <div key={i}>
                     <kbd>{w.content}</kbd>
                     <span>{w.value}</span>
                   </div>
                 ))}
               </div>
             </div>
-            <div class="card person-table-right">
+            <div className="card person-table-right">
               <h3>Emoji Usage</h3>
-              <div class="list">
-                {p.favourite_emojis.map((e) => (
-                  <div>
+              <div className="list">
+                {p.favourite_emojis.map((e, i) => (
+                  <div key={i}>
                     <span>{e.content}</span>
                     <span>{e.value}</span>
                   </div>
@@ -262,7 +261,7 @@ export default function StaticView({ data }: { data: Chatter }) {
           </div>
 
           <hr />
-        </>
+        </Fragment>
       ))}
     </div>
   )

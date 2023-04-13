@@ -1,0 +1,36 @@
+{
+  "name": "chatter",
+  "version": "2.0.0",
+  "main": "index.js",
+  "description": "Explore your Messenger chat from a new perspective.",
+  "repository": "https://github.com/robbiesymonds/Chatter.git",
+  "author": "Robbie Symonnds <hello@robbiesymonds.me>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "parcel src/index.html --port 3000",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "@types/sentiment": "^5.0.1",
+    "chart.js": "^4.2.1",
+    "chartjs-adapter-dayjs-4": "^1.0.4",
+    "dayjs": "^1.11.7",
+    "parcel": "^2.8.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sentiment": "^5.0.2"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.8.3",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "process": "^0.11.10",
+    "typescript": "^5.0.4"
+  },
+  "prettier": {
+    "semi": false,
+    "trailingComma": "none",
+    "printWidth": 100
+  }
+}

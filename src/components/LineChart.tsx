@@ -1,19 +1,16 @@
-/** @jsx h **/
-import { h } from "preact"
-import { useRef, useEffect } from "preact/hooks"
-import { Data } from "../utils/chatter.ts"
-import { enUS } from "date-fns/locale"
-import "charts-date-adapter"
 import {
+  CategoryScale,
   Chart,
   LineController,
-  Tooltip,
-  CategoryScale,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
-  TimeScale
-} from "charts"
+  TimeScale,
+  Tooltip
+} from "chart.js"
+import "chartjs-adapter-dayjs-4"
+import { useEffect, useRef } from "react"
+import { Data } from "../constants/chatter"
 
 Chart.register(
   LineController,
@@ -51,13 +48,9 @@ const LineChart = ({ data }: { data: Data[] }) => {
               type: "time",
               time: {
                 unit: "month",
-                tooltipFormat: "MMMM, yyyy"
+                tooltipFormat: "MMMM, YYYY"
               },
-              adapters: {
-                date: {
-                  locale: enUS
-                }
-              },
+              adapters: {},
               min: data[0].content
             }
           }
